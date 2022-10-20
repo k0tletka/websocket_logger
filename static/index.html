@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Minecraft logs</title>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <div id="messages-container"></div>
+        <script>
+            var container = document.getElementById("messages-container")
+            const socket = new WebSocket("wss://technique.nik-server.tk/wslog")
+
+            socket.addEventListener('message', (event) => {
+                let msg = JSON.parse(event.data)
+                if (msg || msg.message) {
+                    let element = document.createElement("p")
+                    element.className = "element"
+                    element.textContent = msg.message
+
+                    container.prepend(element)
+                } else if (msg || msg.history) {
+                    msg.history.forEach((el) => {
+                        let element = document.createElement("p")
+                        element.className = "element"
+                        element.textContent = el
+
+                        container.prepend(element)
+                    })
+                }
+            })
+        </script>
+    </body>
+</html>
