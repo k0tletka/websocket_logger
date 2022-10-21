@@ -32,7 +32,7 @@ func NewLoggerHTTPServer(conf *config.RootConfig, logger *logger.Logger) *Logger
 func (l *LoggerHTTPServer) StartServer() error {
 	router := mux.NewRouter()
 	router.HandleFunc("/ws/log", l.websocketHandler)
-	router.PathPrefix("/").Handler(http.FileServer(http.Dir("/static")))
+	router.PathPrefix("/").Handler(http.FileServer(http.Dir("static")))
 
 	addr := fmt.Sprintf("%s:%d", l.conf.HTTPConfig.ListenAddr, l.conf.HTTPConfig.ListenPort)
 

@@ -3,22 +3,23 @@
     <head>
         <title>Minecraft logs</title>
         <meta charset="utf-8">
+        <link rel="stylesheet" href="style.css">
     </head>
     <body>
         <div id="messages-container"></div>
         <script>
             var container = document.getElementById("messages-container")
-            const socket = new WebSocket("wss://technique.nik-server.tk/ws/log")
+            const socket = new WebSocket("ws://127.0.0.1:16500/ws/log")
 
             socket.addEventListener('message', (event) => {
                 let msg = JSON.parse(event.data)
-                if (msg || msg.message) {
+                if (msg && msg.message) {
                     let element = document.createElement("p")
                     element.className = "element"
                     element.textContent = msg.message
 
                     container.prepend(element)
-                } else if (msg || msg.history) {
+                } else if (msg && msg.history) {
                     msg.history.forEach((el) => {
                         let element = document.createElement("p")
                         element.className = "element"

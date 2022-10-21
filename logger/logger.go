@@ -64,8 +64,10 @@ func (l *Logger) Start() error {
 
 func (l *Logger) RegisterNewReceiver(receiver LoggerReceiver) {
 	// At first, send then log history
-	historyLocal := make([]string, 0, len(l.history))
-	copy(historyLocal, l.history)
+	historyLocal := make([]string, len(l.history))
+	for i, historyLine := range l.history {
+		historyLocal[len(l.history)-i-1] = historyLine
+	}
 
 	receiver.ReceiveHistory(historyLocal)
 

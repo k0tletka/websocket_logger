@@ -1,0 +1,11 @@
+body {
+    background-color: #222222;
+}
+
+.element {
+    color: white;
+    font-family: monospace;
+    font-size: 16px;
+    margin: 5px;
+    padding: 1px;
+}
