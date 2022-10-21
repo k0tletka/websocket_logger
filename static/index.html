@@ -9,7 +9,7 @@
         <div id="messages-container"></div>
         <script>
             var container = document.getElementById("messages-container")
-            const socket = new WebSocket("ws://127.0.0.1:16500/ws/log")
+            const socket = new WebSocket("{{ .WebsocketAddress }}/ws/log")
 
             socket.addEventListener('message', (event) => {
                 let msg = JSON.parse(event.data)
