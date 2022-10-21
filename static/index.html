@@ -8,7 +8,7 @@
         <div id="messages-container"></div>
         <script>
             var container = document.getElementById("messages-container")
-            const socket = new WebSocket("wss://technique.nik-server.tk/wslog")
+            const socket = new WebSocket("wss://technique.nik-server.tk/ws/log")
 
             socket.addEventListener('message', (event) => {
                 let msg = JSON.parse(event.data)
