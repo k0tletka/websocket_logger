@@ -7,10 +7,6 @@ import (
 	"sync"
 )
 
-const (
-	historySize = 1000
-)
-
 type LoggerReceiver interface {
 	ReceiveHistory([]string)
 	ReceiveMessage(string)
@@ -27,7 +23,7 @@ type Logger struct {
 func NewLogger(conf *config.RootConfig) *Logger {
 	return &Logger{
 		conf:            conf,
-		history:         make([]string, 0, historySize),
+		history:         make([]string, 0, conf.HistorySize),
 		loggerReceivers: []LoggerReceiver{},
 		lrmu:            &sync.Mutex{},
 	}
@@ -51,7 +47,7 @@ func (l *Logger) Start() error {
 
 			l.history = append(l.history, line.Text)
 
-			if len(l.history) > historySize {
+			if len(l.history) > l.conf.HistorySize {
 				l.history = l.history[1:]
 			}
 
