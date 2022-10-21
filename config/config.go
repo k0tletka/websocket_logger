@@ -63,5 +63,10 @@ func getDefaultConfiguration() *RootConfig {
 	return &RootConfig{
 		LogLocation: "/var/log/messages.log",
 		HistorySize: 1000,
+		HTTPConfig: HTTPServerConfiguration{
+			ListenAddr: "127.0.0.1",
+			ListenPort: 80,
+			UseSSL:     false,
+		},
 	}
 }
