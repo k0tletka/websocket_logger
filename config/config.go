@@ -25,7 +25,7 @@ type HTTPServerConfiguration struct {
 	UseSSL         bool            `toml:"use_ssl"`
 	KeyFilePath    string          `toml:"key_file_path"`
 	CertFilePath   string          `toml:"cert_file_path"`
-	BasicAuthUsers []BasicAuthUser `toml:"ba_users"`
+	BasicAuthUsers []BasicAuthUser `toml:"ba_user"`
 }
 
 type BasicAuthUser struct {

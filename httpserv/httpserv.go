@@ -35,7 +35,7 @@ func (l *LoggerHTTPServer) StartServer() error {
 	router.HandleFunc("/ws/log", l.websocketHandler)
 	router.PathPrefix("/").Handler(http.FileServer(http.Dir("static")))
 
-	router.Use()
+	router.Use(l.basicAuth)
 
 	addr := fmt.Sprintf("%s:%d", l.conf.HTTPConfig.ListenAddr, l.conf.HTTPConfig.ListenPort)
 
@@ -69,6 +69,7 @@ func (l *LoggerHTTPServer) basicAuth(handler http.Handler) http.Handler {
 			w.Header().Set("WWW-Authenticate", "Basic realm=\"Please, provide valid username and password\"")
 			w.WriteHeader(http.StatusUnauthorized)
 			w.Write([]byte("Unauthorized"))
+			return
 		}
 
 		handler.ServeHTTP(w, r)
