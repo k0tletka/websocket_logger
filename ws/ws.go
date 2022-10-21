@@ -1,8 +1,8 @@
 package ws
 
 import (
-	"MinecraftServerLogger/logger"
 	"github.com/gorilla/websocket"
+	"github.com/k0tletka/websocket_logger/logger"
 	"log"
 )
 

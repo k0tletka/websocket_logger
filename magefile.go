@@ -1,14 +1,17 @@
+//go:build mage
+// +build mage
+
 package main
 
 import (
 	"bytes"
 	"github.com/magefile/mage/mg"
 	"github.com/magefile/mage/sh"
-	"html/template"
 	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
+	"text/template"
 )
 
 const (
@@ -23,7 +26,7 @@ type IndexHTMLData struct {
 
 var (
 	buildLocation     = filepath.Join(artifactsPath, artifactsBin)
-	indexHTMLTemplate = template.Must(template.New("htmltemplate").ParseFiles("static/index.html"))
+	indexHTMLTemplate = template.Must(template.ParseFiles("./static/index.html"))
 )
 
 func Build() error {

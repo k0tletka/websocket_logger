@@ -1,12 +1,12 @@
 package httpserv
 
 import (
-	"MinecraftServerLogger/config"
-	"MinecraftServerLogger/logger"
-	"MinecraftServerLogger/ws"
 	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/websocket"
+	"github.com/k0tletka/websocket_logger/config"
+	"github.com/k0tletka/websocket_logger/logger"
+	"github.com/k0tletka/websocket_logger/ws"
 	"log"
 	"net/http"
 )

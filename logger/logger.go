@@ -1,8 +1,8 @@
 package logger
 
 import (
-	"MinecraftServerLogger/config"
 	"github.com/hpcloud/tail"
+	"github.com/k0tletka/websocket_logger/config"
 	"log"
 	"sync"
 )

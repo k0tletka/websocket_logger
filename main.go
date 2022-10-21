@@ -1,9 +1,9 @@
 package main
 
 import (
-	"MinecraftServerLogger/config"
-	"MinecraftServerLogger/httpserv"
-	"MinecraftServerLogger/logger"
+	"github.com/k0tletka/websocket_logger/config"
+	"github.com/k0tletka/websocket_logger/httpserv"
+	"github.com/k0tletka/websocket_logger/logger"
 	"log"
 )
 
