@@ -20,11 +20,17 @@ type RootConfig struct {
 }
 
 type HTTPServerConfiguration struct {
-	ListenAddr   string `json:"listen_addr"`
-	ListenPort   uint16 `json:"listen_port"`
-	UseSSL       bool   `json:"use_ssl"`
-	KeyFilePath  string `json:"key_file_path"`
-	CertFilePath string `json:"cert_file_path"`
+	ListenAddr     string          `toml:"listen_addr"`
+	ListenPort     uint16          `toml:"listen_port"`
+	UseSSL         bool            `toml:"use_ssl"`
+	KeyFilePath    string          `toml:"key_file_path"`
+	CertFilePath   string          `toml:"cert_file_path"`
+	BasicAuthUsers []BasicAuthUser `toml:"ba_users"`
+}
+
+type BasicAuthUser struct {
+	Name       string `toml:"name"`
+	Base64Hash string `toml:"hash"`
 }
 
 func (r *RootConfig) validateFields() error {

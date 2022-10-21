@@ -1,6 +1,7 @@
 package httpserv
 
 import (
+	"encoding/base64"
 	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/websocket"
@@ -34,6 +35,8 @@ func (l *LoggerHTTPServer) StartServer() error {
 	router.HandleFunc("/ws/log", l.websocketHandler)
 	router.PathPrefix("/").Handler(http.FileServer(http.Dir("static")))
 
+	router.Use()
+
 	addr := fmt.Sprintf("%s:%d", l.conf.HTTPConfig.ListenAddr, l.conf.HTTPConfig.ListenPort)
 
 	if l.conf.HTTPConfig.UseSSL {
@@ -56,4 +59,31 @@ func (l *LoggerHTTPServer) websocketHandler(w http.ResponseWriter, r *http.Reque
 
 	wsReceiver := ws.NewWebsocketLoggerReceiver(l.logger, wsconn)
 	l.logger.RegisterNewReceiver(wsReceiver)
+}
+
+func (l *LoggerHTTPServer) basicAuth(handler http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		user, password, ok := r.BasicAuth()
+
+		if !ok || !l.checkBasicAuthCredentials(user, password) {
+			w.Header().Set("WWW-Authenticate", "Basic realm=\"Please, provide valid username and password\"")
+			w.WriteHeader(http.StatusUnauthorized)
+			w.Write([]byte("Unauthorized"))
+		}
+
+		handler.ServeHTTP(w, r)
+	})
+}
+
+func (l *LoggerHTTPServer) checkBasicAuthCredentials(user, password string) bool {
+	for _, account := range l.conf.HTTPConfig.BasicAuthUsers {
+		passwordBase64 := make([]byte, base64.StdEncoding.EncodedLen(len(password)))
+		base64.StdEncoding.Encode(passwordBase64, []byte(password))
+
+		if account.Name == user && account.Base64Hash == string(passwordBase64) {
+			return true
+		}
+	}
+
+	return false
 }
