@@ -35,6 +35,7 @@ func (l *LoggerHTTPServer) StartServer() error {
 	router.HandleFunc("/ws/log", l.websocketHandler)
 	router.PathPrefix("/").Handler(http.FileServer(http.Dir("static")))
 
+	router.Use(l.addNoCacheHeader)
 	router.Use(l.basicAuth)
 
 	addr := fmt.Sprintf("%s:%d", l.conf.HTTPConfig.ListenAddr, l.conf.HTTPConfig.ListenPort)
@@ -72,6 +73,13 @@ func (l *LoggerHTTPServer) basicAuth(handler http.Handler) http.Handler {
 			return
 		}
 
+		handler.ServeHTTP(w, r)
+	})
+}
+
+func (l *LoggerHTTPServer) addNoCacheHeader(handler http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Cache-Control", "no-store")
 		handler.ServeHTTP(w, r)
 	})
 }

@@ -29,6 +29,7 @@ func (w *WebsocketLoggerReceiver) ReceiveMessage(message string) {
 	if err := w.conn.WriteJSON(resp); err != nil {
 		log.Println(err)
 		w.logger.DeleteReceiver(w)
+		_ = w.conn.Close()
 	}
 }
 
@@ -38,5 +39,6 @@ func (w *WebsocketLoggerReceiver) ReceiveHistory(history []string) {
 	if err := w.conn.WriteJSON(resp); err != nil {
 		log.Println(err)
 		w.logger.DeleteReceiver(w)
+		_ = w.conn.Close()
 	}
 }

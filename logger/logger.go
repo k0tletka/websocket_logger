@@ -51,11 +51,15 @@ func (l *Logger) Start() error {
 				l.history = l.history[1:]
 			}
 
+			// workaround to avoid deadlock
 			l.lrmu.Lock()
-			for _, receiver := range l.loggerReceivers {
+			receiversToProcess := make([]LoggerReceiver, len(l.loggerReceivers))
+			copy(receiversToProcess, l.loggerReceivers)
+			l.lrmu.Unlock()
+
+			for _, receiver := range receiversToProcess {
 				receiver.ReceiveMessage(line.Text)
 			}
-			l.lrmu.Unlock()
 		}
 	}(t)
 
